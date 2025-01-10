@@ -61,7 +61,7 @@ const CountChart = () => (
 
     <div className='flex justify-center gap-16'>
       <div className='flex flex-col gap-1'>
-        <div className='w-5 h-5 bg-sky rounded-full' />
+        <div className='w-5 h-5 bg-schSky rounded-full' />
 
         <h1 className='font-bold'>1,234</h1>
 
@@ -69,7 +69,7 @@ const CountChart = () => (
       </div>
 
       <div className='flex flex-col gap-1'>
-        <div className='w-5 h-5 bg-yellow rounded-full' />
+        <div className='w-5 h-5 bg-schYellow rounded-full' />
 
         <h1 className='font-bold'>1,234</h1>
 
