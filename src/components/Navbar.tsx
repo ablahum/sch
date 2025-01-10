@@ -35,7 +35,7 @@ const Navbar = () => (
           height={20}
         />
 
-        <div className='absolute -top-3 -right-3 w-5 h-5 flex items-center justify-center bg-purple-500 rounded-full text-xs'>1</div>
+        <div className='absolute -top-3 -right-3 w-5 h-5 flex items-center justify-center bg-purple-500 text-white rounded-full text-xs'>1</div>
       </div>
 
       <div className='flex flex-col'>
