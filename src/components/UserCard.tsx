@@ -1,7 +1,7 @@
 import Image from 'next/image';
 
 const UserCard = ({ type }: { type: string }) => (
-  <div className='rounded-2xl odd:bg-purple even:bg-yellow p-4 flex-1 min-w-[130px]'>
+  <div className='rounded-2xl odd:bg-schPurple even:bg-schYellow p-4 flex-1 min-w-[130px]'>
     <div className='flex justify-between items-center'>
       <span className='text-[10px] bg-white px-2 py-1 rounded-full text-green-600'>2024/25</span>
       <Image
