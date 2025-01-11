@@ -40,9 +40,15 @@ const TeacherForm = ({ type, data }: { type: 'create' | 'update'; data?: any }) 
       className='flex flex-col gap-8'
       onSubmit={onSubmit}
     >
-      <h1 className='text-xl font-semibold'>
-        <span className='capitalize'>create </span>a new teacher
-      </h1>
+      {type === 'create' ? (
+        <h1 className='text-xl font-semibold'>
+          <span className='capitalize'>create </span>a new teacher
+        </h1>
+      ) : (
+        <h1 className='text-xl font-semibold'>
+          <span className='capitalize'>update </span>a teacher
+        </h1>
+      )}
 
       <span className='text-xs text-gray-400 font-medium capitalize'>authentication information</span>
 

@@ -65,6 +65,7 @@ const StudentListPage = () => {
         />
         <div className='flex flex-col'>
           <h3 className='font-semibold'>{item.name}</h3>
+
           <p className='text-xs text-gray-500'>{item.class}</p>
         </div>
       </td>
@@ -84,6 +85,7 @@ const StudentListPage = () => {
               />
             </button>
           </Link>
+
           {role === 'admin' && (
             // <button className="w-7 h-7 flex items-center justify-center rounded-full bg-schPurple">
             //   <Image src="/delete.png" alt="" width={16} height={16} />
