@@ -10,7 +10,7 @@ const SingleTeacherPage = () => (
   <div className='flex-1 p-4 flex flex-col gap-4 xl:flex-row'>
     <div className='w-full xl:w-2/3'>
       <div className='flex flex-col lg:flex-row gap-4'>
-        <div className='bg-schSky py-6 px-4 rounded-md flex-1 flex gap-4'>
+        <div className='bg-schPurple py-6 px-4 rounded-md flex-1 flex gap-4'>
           <div className='w-1/3'>
             <Image
               src='https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg?auto=compress&cs=tinysrgb&w=1200'

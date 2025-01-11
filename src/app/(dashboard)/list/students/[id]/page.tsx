@@ -8,7 +8,7 @@ const SingleStudentPage = () => (
   <div className='flex-1 p-4 flex flex-col gap-4 xl:flex-row'>
     <div className='w-full xl:w-2/3'>
       <div className='flex flex-col lg:flex-row gap-4'>
-        <div className='bg-schSky py-6 px-4 rounded-md flex-1 flex gap-4'>
+        <div className='bg-schYellow py-6 px-4 rounded-md flex-1 flex gap-4'>
           <div className='w-1/3'>
             <Image
               src='https://images.pexels.com/photos/5414817/pexels-photo-5414817.jpeg?auto=compress&cs=tinysrgb&w=1200'
@@ -130,7 +130,7 @@ const SingleStudentPage = () => (
             />
 
             <div className=''>
-              <h1 className='text-xl font-semibold capitalize'>6A</h1>
+              <h1 className='text-xl font-semibold capitalize'>6a</h1>
 
               <span className='text-sm text-gray-400 capitalize'>class</span>
             </div>
