@@ -5,7 +5,7 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Sch -  School Management Dashboard',
+  title: 'SCH -  School Management App',
   description: 'Next.js, Tailwind,  Typescript, OAuth, PostgreSQL, Redis',
 };
 
