@@ -68,7 +68,7 @@ const menuItems = [
       },
       {
         icon: '/attendance.png',
-        label: 'attendance',
+        label: 'attendances',
         href: '/list/attendance',
         visibleTo: ['admin', 'teacher', 'student', 'parent'],
       },
