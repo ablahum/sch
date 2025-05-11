@@ -16,7 +16,7 @@ const Table = ({ columns, renderRow, data }: { columns: { header: string; access
 
       <tbody>{data.map((item) => renderRow(item))}</tbody>
     </table>
-  );
-};
+  )
+}
 
-export default Table;
+export default Table

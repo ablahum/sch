@@ -1,28 +1,28 @@
-import { Day, PrismaClient, UserSex } from '@prisma/client';
-const prisma = new PrismaClient();
+import { Day, PrismaClient, UserSex } from '@prisma/client'
+const prisma = new PrismaClient()
 
 async function main() {
   // ADMIN
   await prisma.admin.create({
     data: {
       id: 'admin1',
-      username: 'admin1',
-    },
-  });
+      username: 'admin1'
+    }
+  })
   await prisma.admin.create({
     data: {
       id: 'admin2',
-      username: 'admin2',
-    },
-  });
+      username: 'admin2'
+    }
+  })
 
   // GRADE
   for (let i = 1; i <= 6; i++) {
     await prisma.grade.create({
       data: {
-        level: i,
-      },
-    });
+        level: i
+      }
+    })
   }
 
   // CLASS
@@ -31,9 +31,9 @@ async function main() {
       data: {
         name: `${i}A`,
         gradeId: i,
-        capacity: Math.floor(Math.random() * (20 - 15 + 1)) + 15,
-      },
-    });
+        capacity: Math.floor(Math.random() * (20 - 15 + 1)) + 15
+      }
+    })
   }
 
   // SUBJECT
@@ -47,11 +47,11 @@ async function main() {
     { name: 'Chemistry' },
     { name: 'Biology' },
     { name: 'Computer Science' },
-    { name: 'Art' },
-  ];
+    { name: 'Art' }
+  ]
 
   for (const subject of subjectData) {
-    await prisma.subject.create({ data: subject });
+    await prisma.subject.create({ data: subject })
   }
 
   // TEACHER
@@ -69,9 +69,9 @@ async function main() {
         sex: i % 2 === 0 ? UserSex.MALE : UserSex.FEMALE,
         subjects: { connect: [{ id: (i % 10) + 1 }] },
         classes: { connect: [{ id: (i % 6) + 1 }] },
-        birthday: new Date(new Date().setFullYear(new Date().getFullYear() - 30)),
-      },
-    });
+        birthday: new Date(new Date().setFullYear(new Date().getFullYear() - 30))
+      }
+    })
   }
 
   // LESSON
@@ -84,9 +84,9 @@ async function main() {
         endTime: new Date(new Date().setHours(new Date().getHours() + 3)),
         subjectId: (i % 10) + 1,
         classId: (i % 6) + 1,
-        teacherId: `teacher${(i % 15) + 1}`,
-      },
-    });
+        teacherId: `teacher${(i % 15) + 1}`
+      }
+    })
   }
 
   // PARENT
@@ -99,9 +99,9 @@ async function main() {
         surname: `PSurname ${i}`,
         email: `parent${i}@example.com`,
         phone: `123-456-789${i}`,
-        address: `Address${i}`,
-      },
-    });
+        address: `Address${i}`
+      }
+    })
   }
 
   // STUDENT
@@ -120,9 +120,9 @@ async function main() {
         parentId: `parentId${Math.ceil(i / 2) % 25 || 25}`,
         gradeId: (i % 6) + 1,
         classId: (i % 6) + 1,
-        birthday: new Date(new Date().setFullYear(new Date().getFullYear() - 10)),
-      },
-    });
+        birthday: new Date(new Date().setFullYear(new Date().getFullYear() - 10))
+      }
+    })
   }
 
   // EXAM
@@ -132,9 +132,9 @@ async function main() {
         title: `Exam ${i}`,
         startTime: new Date(new Date().setHours(new Date().getHours() + 1)),
         endTime: new Date(new Date().setHours(new Date().getHours() + 2)),
-        lessonId: (i % 30) + 1,
-      },
-    });
+        lessonId: (i % 30) + 1
+      }
+    })
   }
 
   // ASSIGNMENT
@@ -144,9 +144,9 @@ async function main() {
         title: `Assignment ${i}`,
         startDate: new Date(new Date().setHours(new Date().getHours() + 1)),
         dueDate: new Date(new Date().setDate(new Date().getDate() + 1)),
-        lessonId: (i % 30) + 1,
-      },
-    });
+        lessonId: (i % 30) + 1
+      }
+    })
   }
 
   // RESULT
@@ -155,9 +155,9 @@ async function main() {
       data: {
         score: 90,
         studentId: `student${i}`,
-        ...(i <= 5 ? { examId: i } : { assignmentId: i - 5 }),
-      },
-    });
+        ...(i <= 5 ? { examId: i } : { assignmentId: i - 5 })
+      }
+    })
   }
 
   // ATTENDANCE
@@ -167,9 +167,9 @@ async function main() {
         date: new Date(),
         present: true,
         studentId: `student${i}`,
-        lessonId: (i % 30) + 1,
-      },
-    });
+        lessonId: (i % 30) + 1
+      }
+    })
   }
 
   // EVENT
@@ -180,9 +180,9 @@ async function main() {
         description: `Description for Event ${i}`,
         startTime: new Date(new Date().setHours(new Date().getHours() + 1)),
         endTime: new Date(new Date().setHours(new Date().getHours() + 2)),
-        classId: (i % 5) + 1,
-      },
-    });
+        classId: (i % 5) + 1
+      }
+    })
   }
 
   // ANNOUNCEMENT
@@ -192,20 +192,20 @@ async function main() {
         title: `Announcement ${i}`,
         description: `Description for Announcement ${i}`,
         date: new Date(),
-        classId: (i % 5) + 1,
-      },
-    });
+        classId: (i % 5) + 1
+      }
+    })
   }
 
-  console.log('Seeding completed successfully.');
+  console.log('Seeding completed successfully.')
 }
 
 main()
   .then(async () => {
-    await prisma.$disconnect();
+    await prisma.$disconnect()
   })
   .catch(async (e) => {
-    console.error(e);
-    await prisma.$disconnect();
-    process.exit(1);
-  });
+    console.error(e)
+    await prisma.$disconnect()
+    process.exit(1)
+  })
