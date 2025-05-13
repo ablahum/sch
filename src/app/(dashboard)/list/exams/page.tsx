@@ -1,4 +1,4 @@
-// import FormContainer from '@/components/FormContainer'
+import FormContainer from '@/components/FormContainer'
 import Pagination from '@/components/Pagination'
 import Table from '@/components/Table'
 import TableSearch from '@/components/TableSearch'
@@ -6,7 +6,7 @@ import prisma from '@/lib/prisma'
 import { ITEM_PER_PAGE } from '@/lib/settings'
 import { Class, Exam, Prisma, Subject, Teacher } from '@prisma/client'
 import Image from 'next/image'
-// import { auth } from '@clerk/nextjs/server'
+import { auth } from '@clerk/nextjs/server'
 
 type ExamList = Exam & {
   lesson: {
@@ -17,9 +17,9 @@ type ExamList = Exam & {
 }
 
 const ExamListPage = async ({ searchParams }: { searchParams: { [key: string]: string | undefined } }) => {
-  // const { userId, sessionClaims } = auth()
-  // const role = (sessionClaims?.metadata as { role?: string })?.role
-  // const currentUserId = userId
+  const { userId, sessionClaims } = await auth()
+  const role = (sessionClaims?.metadata as { role?: string })?.role
+  const currentUserId = userId
 
   const columns = [
     {
@@ -39,15 +39,15 @@ const ExamListPage = async ({ searchParams }: { searchParams: { [key: string]: s
       header: 'Date',
       accessor: 'date',
       className: 'hidden md:table-cell'
-    }
-    // ...(role === 'admin' || role === 'teacher'
-    //   ? [
-    //       {
-    //         header: 'Actions',
-    //         accessor: 'action'
-    //       }
-    //     ]
-    //   : [])
+    },
+    ...(role === 'admin' || role === 'teacher'
+      ? [
+          {
+            header: 'Actions',
+            accessor: 'action'
+          }
+        ]
+      : [])
   ]
 
   const renderRow = (item: ExamList) => (
@@ -61,7 +61,7 @@ const ExamListPage = async ({ searchParams }: { searchParams: { [key: string]: s
       <td className='hidden md:table-cell'>{new Intl.DateTimeFormat('id-ID').format(item.startTime)}</td>
       <td>
         <div className='flex items-center gap-2'>
-          {/* {(role === 'admin' || role === 'teacher') && (
+          {(role === 'admin' || role === 'teacher') && (
             <>
               <FormContainer
                 table='exam'
@@ -74,7 +74,7 @@ const ExamListPage = async ({ searchParams }: { searchParams: { [key: string]: s
                 id={item.id}
               />
             </>
-          )} */}
+          )}
         </div>
       </td>
     </tr>
@@ -85,7 +85,6 @@ const ExamListPage = async ({ searchParams }: { searchParams: { [key: string]: s
   const p = page ? parseInt(page) : 1
 
   // URL PARAMS CONDITION
-
   const query: Prisma.ExamWhereInput = {}
 
   query.lesson = {}
@@ -112,35 +111,34 @@ const ExamListPage = async ({ searchParams }: { searchParams: { [key: string]: s
   }
 
   // ROLE CONDITIONS
+  switch (role) {
+    case 'admin':
+      break
+    case 'teacher':
+      query.lesson.teacherId = currentUserId!
+      break
+    case 'student':
+      query.lesson.class = {
+        students: {
+          some: {
+            id: currentUserId!
+          }
+        }
+      }
+      break
+    case 'parent':
+      query.lesson.class = {
+        students: {
+          some: {
+            parentId: currentUserId!
+          }
+        }
+      }
+      break
 
-  // switch (role) {
-  //   case 'admin':
-  //     break
-  //   case 'teacher':
-  //     query.lesson.teacherId = currentUserId!
-  //     break
-  //   case 'student':
-  //     query.lesson.class = {
-  //       students: {
-  //         some: {
-  //           id: currentUserId!
-  //         }
-  //       }
-  //     }
-  //     break
-  //   case 'parent':
-  //     query.lesson.class = {
-  //       students: {
-  //         some: {
-  //           parentId: currentUserId!
-  //         }
-  //       }
-  //     }
-  //     break
-
-  //   default:
-  //     break
-  // }
+    default:
+      break
+  }
 
   const [data, count] = await prisma.$transaction([
     prisma.exam.findMany({
@@ -184,12 +182,12 @@ const ExamListPage = async ({ searchParams }: { searchParams: { [key: string]: s
                 height={14}
               />
             </button>
-            {/* {(role === 'admin' || role === 'teacher') && (
+            {(role === 'admin' || role === 'teacher') && (
               <FormContainer
                 table='exam'
                 type='create'
               />
-            )} */}
+            )}
           </div>
         </div>
       </div>

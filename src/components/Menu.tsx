@@ -1,153 +1,156 @@
-import { role } from '@/lib/data';
-import Image from 'next/image';
-import Link from 'next/link';
+import { currentUser } from '@clerk/nextjs/server'
+import Image from 'next/image'
+import Link from 'next/link'
 
 const menuItems = [
   {
-    title: 'menu',
+    title: 'MENU',
     items: [
       {
         icon: '/home.png',
-        label: 'home',
+        label: 'Home',
         href: '/',
-        visibleTo: ['admin', 'teacher', 'student', 'parent'],
+        visible: ['admin', 'teacher', 'student', 'parent']
       },
       {
         icon: '/teacher.png',
-        label: 'teachers',
+        label: 'Teachers',
         href: '/list/teachers',
-        visibleTo: ['admin', 'teacher'],
+        visible: ['admin', 'teacher']
       },
       {
         icon: '/student.png',
-        label: 'students',
+        label: 'Students',
         href: '/list/students',
-        visibleTo: ['admin', 'teacher'],
+        visible: ['admin', 'teacher']
       },
       {
         icon: '/parent.png',
-        label: 'parents',
+        label: 'Parents',
         href: '/list/parents',
-        visibleTo: ['admin', 'teacher'],
+        visible: ['admin', 'teacher']
       },
       {
         icon: '/subject.png',
-        label: 'subjects',
+        label: 'Subjects',
         href: '/list/subjects',
-        visibleTo: ['admin'],
+        visible: ['admin']
       },
       {
         icon: '/class.png',
-        label: 'classes',
+        label: 'Classes',
         href: '/list/classes',
-        visibleTo: ['admin', 'teacher'],
+        visible: ['admin', 'teacher']
       },
       {
         icon: '/lesson.png',
-        label: 'lessons',
+        label: 'Lessons',
         href: '/list/lessons',
-        visibleTo: ['admin', 'teacher'],
+        visible: ['admin', 'teacher']
       },
       {
         icon: '/exam.png',
-        label: 'exams',
+        label: 'Exams',
         href: '/list/exams',
-        visibleTo: ['admin', 'teacher', 'student', 'parent'],
+        visible: ['admin', 'teacher', 'student', 'parent']
       },
       {
         icon: '/assignment.png',
-        label: 'assignments',
+        label: 'Assignments',
         href: '/list/assignments',
-        visibleTo: ['admin', 'teacher', 'student', 'parent'],
+        visible: ['admin', 'teacher', 'student', 'parent']
       },
       {
         icon: '/result.png',
-        label: 'results',
+        label: 'Results',
         href: '/list/results',
-        visibleTo: ['admin', 'teacher', 'student', 'parent'],
+        visible: ['admin', 'teacher', 'student', 'parent']
       },
       {
         icon: '/attendance.png',
-        label: 'attendances',
+        label: 'Attendance',
         href: '/list/attendance',
-        visibleTo: ['admin', 'teacher', 'student', 'parent'],
+        visible: ['admin', 'teacher', 'student', 'parent']
       },
       {
         icon: '/calendar.png',
-        label: 'events',
+        label: 'Events',
         href: '/list/events',
-        visibleTo: ['admin', 'teacher', 'student', 'parent'],
+        visible: ['admin', 'teacher', 'student', 'parent']
       },
       {
         icon: '/message.png',
-        label: 'messages',
+        label: 'Messages',
         href: '/list/messages',
-        visibleTo: ['admin', 'teacher', 'student', 'parent'],
+        visible: ['admin', 'teacher', 'student', 'parent']
       },
       {
         icon: '/announcement.png',
-        label: 'announcements',
+        label: 'Announcements',
         href: '/list/announcements',
-        visibleTo: ['admin', 'teacher', 'student', 'parent'],
-      },
-    ],
+        visible: ['admin', 'teacher', 'student', 'parent']
+      }
+    ]
   },
   {
-    title: 'other',
+    title: 'OTHER',
     items: [
       {
         icon: '/profile.png',
-        label: 'profile',
+        label: 'Profile',
         href: '/profile',
-        visibleTo: ['admin', 'teacher', 'student', 'parent'],
+        visible: ['admin', 'teacher', 'student', 'parent']
       },
       {
         icon: '/setting.png',
-        label: 'settings',
+        label: 'Settings',
         href: '/settings',
-        visibleTo: ['admin', 'teacher', 'student', 'parent'],
+        visible: ['admin', 'teacher', 'student', 'parent']
       },
       {
         icon: '/logout.png',
-        label: 'logout',
+        label: 'Logout',
         href: '/logout',
-        visibleTo: ['admin', 'teacher', 'student', 'parent'],
-      },
-    ],
-  },
-];
+        visible: ['admin', 'teacher', 'student', 'parent']
+      }
+    ]
+  }
+]
 
-const Menu = () => (
-  <div className='mt-4 text-sm'>
-    {menuItems.map((menu) => (
-      <div
-        className='flex flex-col gap-2'
-        key={menu.title}
-      >
-        <span className='hidden lg:block text-gray-400 font-light my-4 uppercase'>{menu.title}</span>
-        {menu.items.map((item) => {
-          if (item.visibleTo.includes(role)) {
-            return (
-              <Link
-                href={item.href}
-                key={item.label}
-                className='flex items-center justify-center lg:justify-start gap-4 text-gray-500 py-2 md:px-2 rounded-md hover:bg-schSkyLight'
-              >
-                <Image
-                  src={item.icon}
-                  alt=''
-                  width={20}
-                  height={20}
-                />
+const Menu = async () => {
+  const user = await currentUser()
+  const role = user?.publicMetadata.role as string
+  return (
+    <div className='mt-4 text-sm'>
+      {menuItems.map((i) => (
+        <div
+          className='flex flex-col gap-2'
+          key={i.title}
+        >
+          <span className='hidden lg:block text-gray-400 font-light my-4'>{i.title}</span>
+          {i.items.map((item) => {
+            if (item.visible.includes(role)) {
+              return (
+                <Link
+                  href={item.href}
+                  key={item.label}
+                  className='flex items-center justify-center lg:justify-start gap-4 text-gray-500 py-2 md:px-2 rounded-md hover:bg-schSkyLight'
+                >
+                  <Image
+                    src={item.icon}
+                    alt=''
+                    width={20}
+                    height={20}
+                  />
+                  <span className='hidden lg:block'>{item.label}</span>
+                </Link>
+              )
+            }
+          })}
+        </div>
+      ))}
+    </div>
+  )
+}
 
-                <span className='hidden lg:block capitalize'>{item.label}</span>
-              </Link>
-            );
-          }
-        })}
-      </div>
-    ))}
-  </div>
-);
-
-export default Menu;
+export default Menu

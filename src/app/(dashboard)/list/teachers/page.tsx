@@ -1,4 +1,4 @@
-// import FormContainer from '@/components/FormContainer'
+import FormContainer from '@/components/FormContainer'
 import Pagination from '@/components/Pagination'
 import Table from '@/components/Table'
 import TableSearch from '@/components/TableSearch'
@@ -7,13 +7,13 @@ import { Class, Prisma, Subject, Teacher } from '@prisma/client'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ITEM_PER_PAGE } from '@/lib/settings'
-// import { auth } from '@clerk/nextjs/server'
+import { auth } from '@clerk/nextjs/server'
 
 type TeacherList = Teacher & { subjects: Subject[] } & { classes: Class[] }
 
 const TeacherListPage = async ({ searchParams }: { searchParams: { [key: string]: string | undefined } }) => {
-  // const { sessionClaims } = auth()
-  // const role = (sessionClaims?.metadata as { role?: string })?.role
+  const { sessionClaims } = await auth()
+  const role = (sessionClaims?.metadata as { role?: string })?.role
   const columns = [
     {
       header: 'Info',
@@ -89,7 +89,7 @@ const TeacherListPage = async ({ searchParams }: { searchParams: { [key: string]
               />
             </button>
           </Link>
-          {/* {role === 'admin' && (
+          {role === 'admin' && (
             // <button className="w-7 h-7 flex items-center justify-center rounded-full bg-schPurple">
             //   <Image src="/delete.png" alt="" width={16} height={16} />
             // </button>
@@ -98,7 +98,7 @@ const TeacherListPage = async ({ searchParams }: { searchParams: { [key: string]
               type='delete'
               id={item.id}
             />
-          )} */}
+          )}
         </div>
       </td>
     </tr>
@@ -108,7 +108,6 @@ const TeacherListPage = async ({ searchParams }: { searchParams: { [key: string]
   const p = page ? parseInt(page) : 1
 
   // URL PARAMS CONDITION
-
   const query: Prisma.TeacherWhereInput = {}
 
   if (queryParams) {
@@ -169,12 +168,12 @@ const TeacherListPage = async ({ searchParams }: { searchParams: { [key: string]
                 height={14}
               />
             </button>
-            {/* {role === 'admin' && (
+            {role === 'admin' && (
               <FormContainer
                 table='teacher'
                 type='create'
               />
-            )} */}
+            )}
           </div>
         </div>
       </div>

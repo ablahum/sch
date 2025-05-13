@@ -1,4 +1,4 @@
-// import FormContainer from '@/components/FormContainer'
+import FormContainer from '@/components/FormContainer'
 import Pagination from '@/components/Pagination'
 import Table from '@/components/Table'
 import TableSearch from '@/components/TableSearch'
@@ -6,13 +6,13 @@ import prisma from '@/lib/prisma'
 import { ITEM_PER_PAGE } from '@/lib/settings'
 import { Announcement, Class, Prisma } from '@prisma/client'
 import Image from 'next/image'
-// import { auth } from '@clerk/nextjs/server'
+import { auth } from '@clerk/nextjs/server'
 
 type AnnouncementList = Announcement & { class: Class }
 const AnnouncementListPage = async ({ searchParams }: { searchParams: { [key: string]: string | undefined } }) => {
-  // const { userId, sessionClaims } = auth()
-  // const role = (sessionClaims?.metadata as { role?: string })?.role
-  // const currentUserId = userId
+  const { userId, sessionClaims } = await auth()
+  const role = (sessionClaims?.metadata as { role?: string })?.role
+  const currentUserId = userId
 
   const columns = [
     {
@@ -27,15 +27,15 @@ const AnnouncementListPage = async ({ searchParams }: { searchParams: { [key: st
       header: 'Date',
       accessor: 'date',
       className: 'hidden md:table-cell'
-    }
-    // ...(role === 'admin'
-    //   ? [
-    //       {
-    //         header: 'Actions',
-    //         accessor: 'action'
-    //       }
-    //     ]
-    //   : [])
+    },
+    ...(role === 'admin'
+      ? [
+          {
+            header: 'Actions',
+            accessor: 'action'
+          }
+        ]
+      : [])
   ]
 
   const renderRow = (item: AnnouncementList) => (
@@ -48,7 +48,7 @@ const AnnouncementListPage = async ({ searchParams }: { searchParams: { [key: st
       <td className='hidden md:table-cell'>{new Intl.DateTimeFormat('id-ID').format(item.date)}</td>
       <td>
         <div className='flex items-center gap-2'>
-          {/* {role === 'admin' && (
+          {role === 'admin' && (
             <>
               <FormContainer
                 table='announcement'
@@ -61,7 +61,7 @@ const AnnouncementListPage = async ({ searchParams }: { searchParams: { [key: st
                 id={item.id}
               />
             </>
-          )} */}
+          )}
         </div>
       </td>
     </tr>
@@ -71,7 +71,6 @@ const AnnouncementListPage = async ({ searchParams }: { searchParams: { [key: st
   const p = page ? parseInt(page) : 1
 
   // URL PARAMS CONDITION
-
   const query: Prisma.AnnouncementWhereInput = {}
 
   if (queryParams) {
@@ -89,19 +88,18 @@ const AnnouncementListPage = async ({ searchParams }: { searchParams: { [key: st
   }
 
   // ROLE CONDITIONS
+  const roleConditions = {
+    teacher: { lessons: { some: { teacherId: currentUserId! } } },
+    student: { students: { some: { id: currentUserId! } } },
+    parent: { students: { some: { parentId: currentUserId! } } }
+  }
 
-  // const roleConditions = {
-  //   teacher: { lessons: { some: { teacherId: currentUserId! } } },
-  //   student: { students: { some: { id: currentUserId! } } },
-  //   parent: { students: { some: { parentId: currentUserId! } } }
-  // }
-
-  // query.OR = [
-  //   { classId: null },
-  //   {
-  //     class: roleConditions[role as keyof typeof roleConditions] || {}
-  //   }
-  // ]
+  query.OR = [
+    { classId: null },
+    {
+      class: roleConditions[role as keyof typeof roleConditions] || {}
+    }
+  ]
 
   const [data, count] = await prisma.$transaction([
     prisma.announcement.findMany({
@@ -139,12 +137,12 @@ const AnnouncementListPage = async ({ searchParams }: { searchParams: { [key: st
                 height={14}
               />
             </button>
-            {/* {role === 'admin' && (
+            {role === 'admin' && (
               <FormContainer
                 table='announcement'
                 type='create'
               />
-            )} */}
+            )}
           </div>
         </div>
       </div>

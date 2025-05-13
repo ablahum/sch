@@ -1,4 +1,4 @@
-// import FormContainer from '@/components/FormContainer'
+import FormContainer from '@/components/FormContainer'
 import Pagination from '@/components/Pagination'
 import Table from '@/components/Table'
 import TableSearch from '@/components/TableSearch'
@@ -6,15 +6,15 @@ import prisma from '@/lib/prisma'
 import { ITEM_PER_PAGE } from '@/lib/settings'
 import { Class, Lesson, Prisma, Subject, Teacher } from '@prisma/client'
 import Image from 'next/image'
-// import { auth } from '@clerk/nextjs/server'
+import { auth } from '@clerk/nextjs/server'
 
 type LessonList = Lesson & { subject: Subject } & { class: Class } & {
   teacher: Teacher
 }
 
 const LessonListPage = async ({ searchParams }: { searchParams: { [key: string]: string | undefined } }) => {
-  // const { sessionClaims } = auth()
-  // const role = (sessionClaims?.metadata as { role?: string })?.role
+  const { sessionClaims } = await auth()
+  const role = (sessionClaims?.metadata as { role?: string })?.role
 
   const columns = [
     {
@@ -29,15 +29,15 @@ const LessonListPage = async ({ searchParams }: { searchParams: { [key: string]:
       header: 'Teacher',
       accessor: 'teacher',
       className: 'hidden md:table-cell'
-    }
-    // ...(role === 'admin'
-    //   ? [
-    //       {
-    //         header: 'Actions',
-    //         accessor: 'action'
-    //       }
-    //     ]
-    //   : [])
+    },
+    ...(role === 'admin'
+      ? [
+          {
+            header: 'Actions',
+            accessor: 'action'
+          }
+        ]
+      : [])
   ]
 
   const renderRow = (item: LessonList) => (
@@ -50,7 +50,7 @@ const LessonListPage = async ({ searchParams }: { searchParams: { [key: string]:
       <td className='hidden md:table-cell'>{item.teacher.name + ' ' + item.teacher.surname}</td>
       <td>
         <div className='flex items-center gap-2'>
-          {/* {role === 'admin' && (
+          {role === 'admin' && (
             <>
               <FormContainer
                 table='lesson'
@@ -63,7 +63,7 @@ const LessonListPage = async ({ searchParams }: { searchParams: { [key: string]:
                 id={item.id}
               />
             </>
-          )} */}
+          )}
         </div>
       </td>
     </tr>
@@ -74,7 +74,6 @@ const LessonListPage = async ({ searchParams }: { searchParams: { [key: string]:
   const p = page ? parseInt(page) : 1
 
   // URL PARAMS CONDITION
-
   const query: Prisma.LessonWhereInput = {}
 
   if (queryParams) {
@@ -135,12 +134,12 @@ const LessonListPage = async ({ searchParams }: { searchParams: { [key: string]:
                 height={14}
               />
             </button>
-            {/* {role === 'admin' && (
+            {role === 'admin' && (
               <FormContainer
                 table='lesson'
                 type='create'
               />
-            )} */}
+            )}
           </div>
         </div>
       </div>
