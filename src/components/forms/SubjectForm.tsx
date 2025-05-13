@@ -27,7 +27,6 @@ const SubjectForm = ({ type, data, setOpen, relatedData }: { type: 'create' | 'u
   })
 
   const onSubmit = handleSubmit((data) => {
-    console.log(data)
     formAction(data)
   })
 

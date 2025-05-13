@@ -29,8 +29,6 @@ const StudentForm = ({ type, data, setOpen, relatedData }: { type: 'create' | 'u
   })
 
   const onSubmit = handleSubmit((data) => {
-    console.log('hello')
-    console.log(data)
     formAction({ ...data, img: img?.secure_url })
   })
 

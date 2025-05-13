@@ -27,7 +27,6 @@ const ExamForm = ({ type, data, setOpen, relatedData }: { type: 'create' | 'upda
   })
 
   const onSubmit = handleSubmit((data) => {
-    console.log(data)
     formAction(data)
   })
 
