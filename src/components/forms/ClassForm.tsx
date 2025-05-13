@@ -27,7 +27,6 @@ const ClassForm = ({ type, data, setOpen, relatedData }: { type: 'create' | 'upd
   })
 
   const onSubmit = handleSubmit((data) => {
-    console.log(data)
     formAction(data)
   })
 

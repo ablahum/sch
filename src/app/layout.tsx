@@ -8,7 +8,7 @@ import 'react-toastify/dist/ReactToastify.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'SCH - School Management App',
+  title: 'SCH | School Management App',
   description: 'Tailwind, Next.js, Typescript, PostgreSQL'
 }
 

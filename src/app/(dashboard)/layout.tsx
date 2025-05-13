@@ -22,7 +22,10 @@ export default function DashboardLayout({
             width={32}
             height={32}
           />
-          <span className='hidden lg:block font-bold'>SCH</span>
+          <p className='hidden font-bold uppercase lg:flex flex-col'>
+            sch
+            <span className='capitalize font-normal text-sm text-gray-400'>school management app</span>
+          </p>
         </Link>
         <Menu />
       </div>
