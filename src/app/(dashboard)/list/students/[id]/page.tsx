@@ -4,7 +4,7 @@ import FormContainer from '@/components/FormContainer'
 import Performance from '@/components/Performance'
 import StudentAttendanceCard from '@/components/StudentAttendanceCard'
 import prisma from '@/lib/prisma'
-// import { auth } from '@clerk/nextjs/server'
+import { auth } from '@clerk/nextjs/server'
 import { Class, Student } from '@prisma/client'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -12,8 +12,8 @@ import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
 
 const SingleStudentPage = async ({ params: { id } }: { params: { id: string } }) => {
-  // const { sessionClaims } = auth()
-  // const role = (sessionClaims?.metadata as { role?: string })?.role
+  const { sessionClaims } = await auth()
+  const role = (sessionClaims?.metadata as { role?: string })?.role
 
   const student:
     | (Student & {
@@ -50,13 +50,13 @@ const SingleStudentPage = async ({ params: { id } }: { params: { id: string } })
             <div className='w-2/3 flex flex-col justify-between gap-4'>
               <div className='flex items-center gap-4'>
                 <h1 className='text-xl font-semibold'>{student.name + ' ' + student.surname}</h1>
-                {/* {role === 'admin' && (
+                {role === 'admin' && (
                   <FormContainer
                     table='student'
                     type='update'
                     data={student}
                   />
-                )} */}
+                )}
               </div>
               <p className='text-sm text-gray-500'>Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
               <div className='flex items-center justify-between gap-2 flex-wrap text-xs font-medium'>

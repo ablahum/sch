@@ -4,15 +4,15 @@ import BigCalendar from '@/components/BigCalendar'
 import FormContainer from '@/components/FormContainer'
 import Performance from '@/components/Performance'
 import prisma from '@/lib/prisma'
-// import { auth } from '@clerk/nextjs/server'
+import { auth } from '@clerk/nextjs/server'
 import { Teacher } from '@prisma/client'
 import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
 const SingleTeacherPage = async ({ params: { id } }: { params: { id: string } }) => {
-  // const { sessionClaims } = auth()
-  // const role = (sessionClaims?.metadata as { role?: string })?.role
+  const { sessionClaims } = await auth()
+  const role = (sessionClaims?.metadata as { role?: string })?.role
 
   const teacher:
     | (Teacher & {
@@ -54,13 +54,13 @@ const SingleTeacherPage = async ({ params: { id } }: { params: { id: string } })
             <div className='w-2/3 flex flex-col justify-between gap-4'>
               <div className='flex items-center gap-4'>
                 <h1 className='text-xl font-semibold'>{teacher.name + ' ' + teacher.surname}</h1>
-                {/* {role === 'admin' && (
+                {role === 'admin' && (
                   <FormContainer
                     table='teacher'
                     type='update'
                     data={teacher}
                   />
-                )} */}
+                )}
               </div>
               <p className='text-sm text-gray-500'>Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
               <div className='flex items-center justify-between gap-2 flex-wrap text-xs font-medium'>

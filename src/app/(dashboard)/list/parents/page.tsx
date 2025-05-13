@@ -1,4 +1,4 @@
-// import FormContainer from '@/components/FormContainer'
+import FormContainer from '@/components/FormContainer'
 import Pagination from '@/components/Pagination'
 import Table from '@/components/Table'
 import TableSearch from '@/components/TableSearch'
@@ -6,14 +6,13 @@ import prisma from '@/lib/prisma'
 import { ITEM_PER_PAGE } from '@/lib/settings'
 import { Parent, Prisma, Student } from '@prisma/client'
 import Image from 'next/image'
-
-// import { auth } from '@clerk/nextjs/server'
+import { auth } from '@clerk/nextjs/server'
 
 type ParentList = Parent & { students: Student[] }
 
 const ParentListPage = async ({ searchParams }: { searchParams: { [key: string]: string | undefined } }) => {
-  // const { sessionClaims } = auth()
-  // const role = (sessionClaims?.metadata as { role?: string })?.role
+  const { sessionClaims } = await auth()
+  const role = (sessionClaims?.metadata as { role?: string })?.role
 
   const columns = [
     {
@@ -34,15 +33,15 @@ const ParentListPage = async ({ searchParams }: { searchParams: { [key: string]:
       header: 'Address',
       accessor: 'address',
       className: 'hidden lg:table-cell'
-    }
-    // ...(role === 'admin'
-    //   ? [
-    //       {
-    //         header: 'Actions',
-    //         accessor: 'action'
-    //       }
-    //     ]
-    //   : [])
+    },
+    ...(role === 'admin'
+      ? [
+          {
+            header: 'Actions',
+            accessor: 'action'
+          }
+        ]
+      : [])
   ]
 
   const renderRow = (item: ParentList) => (
@@ -61,7 +60,7 @@ const ParentListPage = async ({ searchParams }: { searchParams: { [key: string]:
       <td className='hidden md:table-cell'>{item.address}</td>
       <td>
         <div className='flex items-center gap-2'>
-          {/* {role === 'admin' && (
+          {role === 'admin' && (
             <>
               <FormContainer
                 table='parent'
@@ -74,7 +73,7 @@ const ParentListPage = async ({ searchParams }: { searchParams: { [key: string]:
                 id={item.id}
               />
             </>
-          )} */}
+          )}
         </div>
       </td>
     </tr>
@@ -85,7 +84,6 @@ const ParentListPage = async ({ searchParams }: { searchParams: { [key: string]:
   const p = page ? parseInt(page) : 1
 
   // URL PARAMS CONDITION
-
   const query: Prisma.ParentWhereInput = {}
 
   if (queryParams) {
@@ -138,12 +136,12 @@ const ParentListPage = async ({ searchParams }: { searchParams: { [key: string]:
                 height={14}
               />
             </button>
-            {/* {role === 'admin' && (
+            {role === 'admin' && (
               <FormContainer
                 table='parent'
                 type='create'
               />
-            )} */}
+            )}
           </div>
         </div>
       </div>
