@@ -9,8 +9,8 @@ import { studentSchema, StudentSchema, teacherSchema, TeacherSchema } from '@/li
 import { useFormState } from 'react-dom'
 import { createStudent, createTeacher, updateStudent, updateTeacher } from '@/lib/actions'
 import { useRouter } from 'next/navigation'
-// import { toast } from 'react-toastify'
-// import { CldUploadWidget } from 'next-cloudinary'
+import { toast } from 'react-toastify'
+import { CldUploadWidget } from 'next-cloudinary'
 
 const StudentForm = ({ type, data, setOpen, relatedData }: { type: 'create' | 'update'; data?: any; setOpen: Dispatch<SetStateAction<boolean>>; relatedData?: any }) => {
   const {
@@ -36,7 +36,7 @@ const StudentForm = ({ type, data, setOpen, relatedData }: { type: 'create' | 'u
 
   useEffect(() => {
     if (state.success) {
-      // toast(`Student has been ${type === 'create' ? 'created' : 'updated'}!`)
+      toast(`Student has been ${type === 'create' ? 'created' : 'updated'}!`)
       setOpen(false)
       router.refresh()
     }
@@ -76,7 +76,7 @@ const StudentForm = ({ type, data, setOpen, relatedData }: { type: 'create' | 'u
         />
       </div>
       <span className='text-xs text-gray-400 font-medium'>Personal Information</span>
-      {/* <CldUploadWidget
+      <CldUploadWidget
         uploadPreset='school'
         onSuccess={(result, { widget }) => {
           setImg(result.info)
@@ -99,7 +99,7 @@ const StudentForm = ({ type, data, setOpen, relatedData }: { type: 'create' | 'u
             </div>
           )
         }}
-      </CldUploadWidget> */}
+      </CldUploadWidget>
       <div className='flex justify-between flex-wrap gap-4'>
         <InputField
           label='First Name'
@@ -158,7 +158,7 @@ const StudentForm = ({ type, data, setOpen, relatedData }: { type: 'create' | 'u
             defaultValue={data?.id}
             register={register}
             error={errors?.id}
-            // hidden
+            hidden
           />
         )}
         <div className='flex flex-col gap-2 w-full md:w-1/4'>

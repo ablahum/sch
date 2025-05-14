@@ -115,12 +115,12 @@ const SubjectListPage = async ({ searchParams }: { searchParams: { [key: string]
                 height={14}
               />
             </button>
-            {/* {role === 'admin' && (
+            {role === 'admin' && (
               <FormContainer
                 table='subject'
                 type='create'
               />
-            )} */}
+            )}
           </div>
         </div>
       </div>
