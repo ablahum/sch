@@ -7,7 +7,7 @@ import { classSchema, ClassSchema, subjectSchema, SubjectSchema } from '@/lib/fo
 import { createClass, createSubject, updateClass, updateSubject } from '@/lib/actions'
 import { useFormState } from 'react-dom'
 import { Dispatch, SetStateAction, useEffect } from 'react'
-// import { toast } from 'react-toastify'
+import { toast } from 'react-toastify'
 import { useRouter } from 'next/navigation'
 
 const ClassForm = ({ type, data, setOpen, relatedData }: { type: 'create' | 'update'; data?: any; setOpen: Dispatch<SetStateAction<boolean>>; relatedData?: any }) => {
@@ -34,7 +34,7 @@ const ClassForm = ({ type, data, setOpen, relatedData }: { type: 'create' | 'upd
 
   useEffect(() => {
     if (state.success) {
-      // toast(`Subject has been ${type === 'create' ? 'created' : 'updated'}!`)
+      toast(`Class has been ${type === 'create' ? 'created' : 'updated'}!`)
       setOpen(false)
       router.refresh()
     }
@@ -71,7 +71,7 @@ const ClassForm = ({ type, data, setOpen, relatedData }: { type: 'create' | 'upd
             defaultValue={data?.id}
             register={register}
             error={errors?.id}
-            // hidden
+            hidden
           />
         )}
         <div className='flex flex-col gap-2 w-full md:w-1/4'>

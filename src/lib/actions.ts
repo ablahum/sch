@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { ClassSchema, ExamSchema, StudentSchema, SubjectSchema, TeacherSchema } from './formValidationSchemas'
 import prisma from './prisma'
-// import { clerkClient } from '@clerk/nextjs/server'
+import { clerkClient } from '@clerk/nextjs/server'
 
 type CurrentState = { success: boolean; error: boolean }
 
@@ -115,18 +115,19 @@ export const deleteClass = async (currentState: CurrentState, data: FormData) =>
 
 export const createTeacher = async (currentState: CurrentState, data: TeacherSchema) => {
   try {
-    // const user = await clerkClient.users.createUser({
-    //   username: data.username,
-    //   password: data.password,
-    //   firstName: data.name,
-    //   lastName: data.surname,
-    //   publicMetadata: { role: 'teacher' }
-    // })
+    const clerk = await clerkClient()
+
+    const user = await clerk.users.createUser({
+      username: data.username,
+      password: data.password,
+      firstName: data.name,
+      lastName: data.surname,
+      publicMetadata: { role: 'teacher' }
+    })
 
     await prisma.teacher.create({
       data: {
-        // id: user.id,
-        id: '',
+        id: user.id,
         username: data.username,
         name: data.name,
         surname: data.surname,
@@ -158,12 +159,14 @@ export const updateTeacher = async (currentState: CurrentState, data: TeacherSch
     return { success: false, error: true }
   }
   try {
-    // const user = await clerkClient.users.updateUser(data.id, {
-    //   username: data.username,
-    //   ...(data.password !== '' && { password: data.password }),
-    //   firstName: data.name,
-    //   lastName: data.surname
-    // })
+    const clerk = await clerkClient()
+
+    const user = await clerk.users.updateUser(data.id, {
+      username: data.username,
+      ...(data.password !== '' && { password: data.password }),
+      firstName: data.name,
+      lastName: data.surname
+    })
 
     await prisma.teacher.update({
       where: {
@@ -199,7 +202,9 @@ export const updateTeacher = async (currentState: CurrentState, data: TeacherSch
 export const deleteTeacher = async (currentState: CurrentState, data: FormData) => {
   const id = data.get('id') as string
   try {
-    // await clerkClient.users.deleteUser(id)
+    const clerk = await clerkClient()
+
+    await clerk.users.deleteUser(id)
 
     await prisma.teacher.delete({
       where: {
@@ -218,6 +223,8 @@ export const deleteTeacher = async (currentState: CurrentState, data: FormData) 
 export const createStudent = async (currentState: CurrentState, data: StudentSchema) => {
   console.log(data)
   try {
+    const clerk = await clerkClient()
+
     const classItem = await prisma.class.findUnique({
       where: { id: data.classId },
       include: { _count: { select: { students: true } } }
@@ -227,18 +234,17 @@ export const createStudent = async (currentState: CurrentState, data: StudentSch
       return { success: false, error: true }
     }
 
-    // const user = await clerkClient.users.createUser({
-    //   username: data.username,
-    //   password: data.password,
-    //   firstName: data.name,
-    //   lastName: data.surname,
-    //   publicMetadata: { role: 'student' }
-    // })
+    const user = await clerk.users.createUser({
+      username: data.username,
+      password: data.password,
+      firstName: data.name,
+      lastName: data.surname,
+      publicMetadata: { role: 'student' }
+    })
 
     await prisma.student.create({
       data: {
-        // id: user.id,
-        id: '',
+        id: user.id,
         username: data.username,
         name: data.name,
         surname: data.surname,
@@ -268,12 +274,14 @@ export const updateStudent = async (currentState: CurrentState, data: StudentSch
     return { success: false, error: true }
   }
   try {
-    // const user = await clerkClient.users.updateUser(data.id, {
-    //   username: data.username,
-    //   ...(data.password !== '' && { password: data.password }),
-    //   firstName: data.name,
-    //   lastName: data.surname
-    // })
+    const clerk = await clerkClient()
+
+    const user = await clerk.users.updateUser(data.id, {
+      username: data.username,
+      ...(data.password !== '' && { password: data.password }),
+      firstName: data.name,
+      lastName: data.surname
+    })
 
     await prisma.student.update({
       where: {
@@ -307,7 +315,9 @@ export const updateStudent = async (currentState: CurrentState, data: StudentSch
 export const deleteStudent = async (currentState: CurrentState, data: FormData) => {
   const id = data.get('id') as string
   try {
-    // await clerkClient.users.deleteUser(id)
+    const clerk = await clerkClient()
+
+    await clerk.users.deleteUser(id)
 
     await prisma.student.delete({
       where: {

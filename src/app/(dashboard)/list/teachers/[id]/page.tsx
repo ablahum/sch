@@ -41,7 +41,7 @@ const SingleTeacherPage = async ({ params: { id } }: { params: { id: string } })
         {/* TOP */}
         <div className='flex flex-col lg:flex-row gap-4'>
           {/* USER INFO CARD */}
-          <div className='bg-schSky py-6 px-4 rounded-md flex-1 flex gap-4'>
+          <div className='bg-schPurple py-6 px-4 rounded-md flex-1 flex gap-4'>
             <div className='w-1/3'>
               <Image
                 src={teacher.img || '/noAvatar.png'}

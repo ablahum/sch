@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { useFormState } from 'react-dom'
-// import { toast } from 'react-toastify'
+import { toast } from 'react-toastify'
 import { FormContainerProps } from './FormContainer'
 
 const deleteActionMap = {
@@ -109,7 +109,7 @@ const FormModal = ({ table, type, data, id, relatedData }: FormContainerProps & 
 
     useEffect(() => {
       if (state.success) {
-        // toast(`${table} has been deleted!`)
+        toast(`${table} has been deleted!`)
         setOpen(false)
         router.refresh()
       }

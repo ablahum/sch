@@ -9,8 +9,8 @@ import { teacherSchema, TeacherSchema } from '@/lib/formValidationSchemas'
 import { useFormState } from 'react-dom'
 import { createTeacher, updateTeacher } from '@/lib/actions'
 import { useRouter } from 'next/navigation'
-// import { toast } from 'react-toastify'
-// import { CldUploadWidget } from 'next-cloudinary'
+import { toast } from 'react-toastify'
+import { CldUploadWidget } from 'next-cloudinary'
 
 const TeacherForm = ({ type, data, setOpen, relatedData }: { type: 'create' | 'update'; data?: any; setOpen: Dispatch<SetStateAction<boolean>>; relatedData?: any }) => {
   const {
@@ -36,7 +36,7 @@ const TeacherForm = ({ type, data, setOpen, relatedData }: { type: 'create' | 'u
 
   useEffect(() => {
     if (state.success) {
-      // toast(`Teacher has been ${type === 'create' ? 'created' : 'updated'}!`)
+      toast(`Teacher has been ${type === 'create' ? 'created' : 'updated'}!`)
       setOpen(false)
       router.refresh()
     }
@@ -127,7 +127,7 @@ const TeacherForm = ({ type, data, setOpen, relatedData }: { type: 'create' | 'u
             defaultValue={data?.id}
             register={register}
             error={errors?.id}
-            // hidden
+            hidden
           />
         )}
         <div className='flex flex-col gap-2 w-full md:w-1/4'>
@@ -161,14 +161,14 @@ const TeacherForm = ({ type, data, setOpen, relatedData }: { type: 'create' | 'u
           </select>
           {errors.subjects?.message && <p className='text-xs text-red-400'>{errors.subjects.message.toString()}</p>}
         </div>
-        {/* <CldUploadWidget
-          uploadPreset='school'
+        <CldUploadWidget
+          uploadPreset='sch'
           onSuccess={(result, { widget }) => {
             setImg(result.info)
             widget.close()
           }}
-        > */}
-        {/* {({ open }) => {
+        >
+          {({ open }) => {
             return (
               <div
                 className='text-xs text-gray-500 flex items-center gap-2 cursor-pointer'
@@ -184,7 +184,7 @@ const TeacherForm = ({ type, data, setOpen, relatedData }: { type: 'create' | 'u
               </div>
             )
           }}
-        </CldUploadWidget> */}
+        </CldUploadWidget>
       </div>
       {state.error && <span className='text-red-500'>Something went wrong!</span>}
       <button className='bg-blue-400 text-white p-2 rounded-md'>{type === 'create' ? 'Create' : 'Update'}</button>
